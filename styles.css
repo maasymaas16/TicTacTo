@@ -1,0 +1,50 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.scoreboard {
+    width: 50%;
+    height: 10em;
+    display: flex;
+    justify-content: space-evenly;
+    margin:0 auto;
+    margin-top: 2em;
+}
+
+.playerOneScore, .playerTwoScore {
+    font-size: larger;
+    font-weight: 600;
+}
+
+.p1Score, .p2Score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: solid 2px black;
+    border-radius: 8px;
+    font-size: 2em;
+    font-weight: 600;
+    padding: .75em;
+}
+
+.board-grid {
+    display: grid;
+    grid-template-rows: repeat(3, 100px);
+    grid-template-columns: repeat(3,100px);
+    gap: .5em;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.gameBoardBox {
+    border: solid 2px black;
+    background-color: rgba(100, 98, 98, 0.2);
+    border-radius: 16px;
+}
+
+.gameBoardBox:hover{
+    background-color:rgba(100, 98, 98, 0.5);
+    cursor:pointer;
+}
