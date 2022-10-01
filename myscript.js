@@ -49,12 +49,13 @@ const Game = (() => {
     if (turnNum < maxTurns){
         const placeMarker = function(){
             document.addEventListener('click', function(e){
-                if(e.target && e.target.id==='box'){
+                if(e.target && e.target.id==='box' && e.target.innerHTML == ''){
                     e.target.innerHTML = ((playerOne.turn) ? 'X' : 'O');
+                    switchTurn();
+                    turnNum += 1;
+                } else {
+                    alert('Please pick an empty square')
                 }
-                switchTurn();
-                turnNum += 1;
-                console.log(turnNum);
             });
         }();
     }
