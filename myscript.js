@@ -16,16 +16,20 @@ const playerFactory = (name) => {
 
 const Gameboard = (() => {
     var maxTurns = 9;
-    const gameArray = new Array(3).fill(0).map(() => new Array(3).fill(0));
+    var gameArray = new Array(9).fill(0);
     for (i = 0; i < maxTurns; i++){
         const box = document.createElement('div');
         box.className = 'gameBoardBox';
+        box.setAttribute("value",i);
         box.setAttribute('id', 'box');
         const board = document.querySelector('.board-grid');
         board.appendChild(box);
     }
+
+    return { gameArray };
     
 })();
+
 
 const Game = (() => {
     const playerOne = playerFactory('Player1');
@@ -33,7 +37,6 @@ const Game = (() => {
     playerOne.marker = 'X';
     playerTwo.marker = 'O';
     playerOne.turn = true;
-    var maxTurns = 9;
 
     function switchTurn(){
         if (playerOne.turn == true){
@@ -43,21 +46,31 @@ const Game = (() => {
             playerOne.turn = true;
             playerTwo.turn = false;
         }
-        }
-
-    var turnNum = 0;
-    if (turnNum < maxTurns){
-        const placeMarker = function(){
-            document.addEventListener('click', function(e){
-                if(e.target && e.target.id==='box' && e.target.innerHTML == ''){
-                    e.target.innerHTML = ((playerOne.turn) ? 'X' : 'O');
-                    switchTurn();
-                    turnNum += 1;
-                } else {
-                    alert('Please pick an empty square')
-                }
-            });
-        }();
     }
+
+    function checkWinner() {
+        for (i=0; i<3; i++){
+            if (Gameboard.gameArray[i] != 0){
+                if ((Gameboard.gameArray[i] === Gameboard.gameArray[i+3]) && (Gameboard.gameArray[i+3] === Gameboard.gameArray[i+6])){
+                    return true;
+            }
+        }
+    }
+}
+
+    document.addEventListener('click', function(e){
+        if(e.target && e.target.id == 'box' && e.target.innerHTML == ''){
+            Gameboard.gameArray[e.target.getAttribute('value')] = (playerOne.turn) ? 'X' : 'O';
+            e.target.innerHTML = ((playerOne.turn) ? 'X' : 'O');
+            if (checkWinner()){
+                alert('You have won!');
+            } else {
+                switchTurn();
+            }
+        } else if (e.target.id==='box' && e.target.innerHTML != '') {
+            alert('Please pick an empty square');
+        }
+    });
 })();
+
 
