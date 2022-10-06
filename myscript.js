@@ -31,9 +31,12 @@ const Gameboard = (() => {
         for (i = 0; i < boxes.length; i++){
             boxes[i].innerHTML = '';
         }
+        for (j = 0; j < gameArray.length; j++){
+            gameArray[j] = 0;
+        }
     }
 
-    return { gameArray };
+    return { gameArray, resetGame };
     
 })();
 
@@ -46,12 +49,12 @@ const Game = (() => {
     playerOne.turn = true;
 
     function switchTurn(){
-        if (playerOne.turn == true){
-            playerOne.turn = false;
-            playerTwo.turn = true;
+        if (playerOne.turn){
+            playerOne.turn = !playerOne.turn;
+            playerTwo.turn = !playerTwo.turn;
         } else {
-            playerOne.turn = true;
-            playerTwo.turn = false;
+            playerOne.turn = !playerOne.turn;
+            playerTwo.turn = !playerTwo.turn;
         }
     }
 
@@ -80,8 +83,8 @@ const Game = (() => {
             e.target.innerHTML = ((playerOne.turn) ? 'X' : 'O');
             if (checkWinner()){
                 playerOne.turn ? alert('Player1 wins!') : alert('Player2 wins!');
-                playerOne.turn ? playerOne.incrementScore() : playerTwo.incrementScore();
-                console.log(playerOne.getScore());
+                Gameboard.resetGame();
+                
             } else {
                 switchTurn();
             }
