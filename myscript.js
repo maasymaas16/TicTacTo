@@ -7,11 +7,15 @@ const playerFactory = (name) => {
         score += 1;
     }
 
+    function resetScore() {
+        score = 0;
+    }
+
     function getScore() {
         return score;
     }
 
-    return { name, incrementScore, getScore, marker, turn };
+    return { name, incrementScore, getScore, marker, turn, resetScore};
 };
 
 const Gameboard = (() => {
@@ -26,8 +30,7 @@ const Gameboard = (() => {
         board.appendChild(box);
     }
 
-    function resetGame() {
-        Game.resetTurn();
+    function clearBoard() {
         let boxes = document.getElementsByClassName('gameBoardBox');
         for (i = 0; i < boxes.length; i++){
             boxes[i].innerHTML = '';
@@ -37,6 +40,14 @@ const Gameboard = (() => {
         }
     }
 
+    function resetGame() {
+        clearBoard();
+        Game.resetTurn();
+        Game.playerOne.resetScore();
+        Game.playerTwo.resetScore();
+        updateScore();
+    }
+
     function updateScore(){
         const p1Score = document.querySelector('.p1Score');
         const p2Score = document.querySelector('.p2Score');
@@ -44,7 +55,7 @@ const Gameboard = (() => {
         p2Score.innerHTML = Game.playerTwo.getScore();
     }
 
-    return { gameArray, resetGame, updateScore };
+    return { gameArray, resetGame, updateScore, clearBoard };
     
 })();
 
@@ -99,10 +110,10 @@ const Game = (() => {
                 playerOne.turn ? alert('Player1 wins!') : alert('Player2 wins!');
                 playerOne.turn ? playerOne.incrementScore() : playerTwo.incrementScore();
                 Gameboard.updateScore();
-                Gameboard.resetGame();
+                Gameboard.clearBoard();
                 turnNum = 0;  
             } else if (turnNum == 8){
-                Gameboard.resetGame();
+                Gameboard.clearBoard();
                 turnNum = 0;
                 alert('Tie Game!')
             } else {
