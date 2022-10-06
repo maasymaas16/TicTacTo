@@ -27,6 +27,7 @@ const Gameboard = (() => {
     }
 
     function resetGame() {
+        Game.resetTurn();
         let boxes = document.getElementsByClassName('gameBoardBox');
         for (i = 0; i < boxes.length; i++){
             boxes[i].innerHTML = '';
@@ -47,6 +48,11 @@ const Game = (() => {
     playerOne.marker = 'X';
     playerTwo.marker = 'O';
     playerOne.turn = true;
+    let turnNum = 0;
+
+    function resetTurn() {
+        turnNum = 0;
+    }
 
     function switchTurn(){
         if (playerOne.turn){
@@ -56,6 +62,7 @@ const Game = (() => {
             playerOne.turn = !playerOne.turn;
             playerTwo.turn = !playerTwo.turn;
         }
+        turnNum += 1;
     }
 
     function checkWinner() {
@@ -84,7 +91,11 @@ const Game = (() => {
             if (checkWinner()){
                 playerOne.turn ? alert('Player1 wins!') : alert('Player2 wins!');
                 Gameboard.resetGame();
-                
+                turnNum = 0;  
+            } else if (turnNum == 8){
+                Gameboard.resetGame();
+                turnNum = 0;
+                alert('Tie Game!')
             } else {
                 switchTurn();
             }
@@ -92,6 +103,9 @@ const Game = (() => {
             alert('Please pick an empty square');
         }
     });
+
+    return { resetTurn };
+
 })();
 
 
