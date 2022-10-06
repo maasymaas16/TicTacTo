@@ -37,7 +37,14 @@ const Gameboard = (() => {
         }
     }
 
-    return { gameArray, resetGame };
+    function updateScore(){
+        const p1Score = document.querySelector('.p1Score');
+        const p2Score = document.querySelector('.p2Score');
+        p1Score.innerHTML = Game.playerOne.getScore();
+        p2Score.innerHTML = Game.playerTwo.getScore();
+    }
+
+    return { gameArray, resetGame, updateScore };
     
 })();
 
@@ -90,6 +97,8 @@ const Game = (() => {
             e.target.innerHTML = ((playerOne.turn) ? 'X' : 'O');
             if (checkWinner()){
                 playerOne.turn ? alert('Player1 wins!') : alert('Player2 wins!');
+                playerOne.turn ? playerOne.incrementScore() : playerTwo.incrementScore();
+                Gameboard.updateScore();
                 Gameboard.resetGame();
                 turnNum = 0;  
             } else if (turnNum == 8){
@@ -104,7 +113,7 @@ const Game = (() => {
         }
     });
 
-    return { resetTurn };
+    return { resetTurn, playerOne, playerTwo };
 
 })();
 
